@@ -5,55 +5,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const regExpName = /^[a-z0-9_-]{2,30}$/
 
-
-    const validateElem = (elem) => {
-
-        if (!regExpName.test(elem.value) && elem.value != '') {
-            elem.nextElementSibling.textContent = 'Must be between 2 and 30 characters!'
+    function btnValid(errorsCounter) {
+        if (errorsCounter > 0) {
+            editButton.setAttribute('disabled', true)
+            editButton.classList.remove('active')
         } else {
-            elem.nextElementSibling.textContent = ''
-            btnValid()
+            editButton.removeAttribute('disabled')
+            editButton.classList.add('active')
         }
     }
 
 
-    for (let elem of form.elements) {
-        if (elem.tagName != 'BUTTON') {
-            elem.addEventListener('blur', () => {
-                validateElem(elem)
-            })
+    const validateElem = (elem, errorElem) => {
+        switch (true) {
+            case elem.value === '':
+                errorElem.textContent = 'This is a required field!';
+                return 1;
+            case !regExpName.test(elem.value):
+                errorElem.textContent = 'Must be between 2 and 30 characters!';
+                return 1;
+            default:
+                errorElem.textContent = ''
+                return 0;
         }
     }
 
+    form.addEventListener('input', () => {
+        let errorsCounter = 0;
 
-    form.addEventListener('input', (event) => {
-        event.preventDefault()
         for (let elem of form.elements) {
             if (elem.tagName != 'BUTTON') {
-                if (elem.value === '') {
-                    elem.nextElementSibling.textContent = 'Это обязательное поле!'
-                } else {
-                    elem.nextElementSibling.textContent = ''
-                }
+                const error = validateElem(elem, elem.nextElementSibling)
+                errorsCounter = errorsCounter + error;
             }
         }
+
+        btnValid(errorsCounter);
     })
 
 
-
-    function btnValid() {
-        for (let elem of form.elements) {
-            if (elem.tagName != 'BUTTON') {
-                if (elem.value === '') {
-                    editButton.setAttribute('disabled', true)
-                    editButton.classList.remove('active')
-                } else {
-                    editButton.removeAttribute('disabled')
-                    editButton.classList.add('active')
-                }
-            }
-        }
-    }
 
 
 
