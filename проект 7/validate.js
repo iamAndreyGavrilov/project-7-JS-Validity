@@ -7,21 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     const validateElem = (elem) => {
-        if (elem.name === 'name_edit') {
-            if (!regExpName.test(elem.value) && elem.value != '') {
-                elem.nextElementSibling.textContent = 'Must be between 2 and 30 characters!'
-            } else {
-                elem.nextElementSibling.textContent = ''
-                btnValid()
-            }
-        }
-        if (elem.name === 'link_edit') {
-            if (!regExpName.test(elem.value) && elem.value != '') {
-                elem.nextElementSibling.textContent = 'Must be between 2 and 30 characters!'
-            } else {
-                elem.nextElementSibling.textContent = ''
-                btnValid()
-            }
+
+        if (!regExpName.test(elem.value) && elem.value != '') {
+            elem.nextElementSibling.textContent = 'Must be between 2 and 30 characters!'
+        } else {
+            elem.nextElementSibling.textContent = ''
+            btnValid()
         }
     }
 
